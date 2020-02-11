@@ -1,0 +1,12 @@
+function array_combine_($keys, $values)
+                    {
+                        $result = array();
+                        foreach ($keys as $i => $k) {
+                            $result[$k][] = $values[$i];
+                        }
+                        array_walk($result, create_function('&$v', '$v = (count($v) == 1)? array_pop($v): $v;'));
+                        return    $result;
+                    }
+
+                    array_combine_($hsn11, $tax_rate1); 
+                    $array3  = array_combine_($hsn11,$tax_rate1); 

@@ -1,0 +1,8 @@
+bracketes extention:
+Brackets Tools
+Brackets Tree Icons
+Emmet
+Indent Guides
+Lorem Ipsum
+PHP Completion (AutoComplete)
+PHP SmartHints

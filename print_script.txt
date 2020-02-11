@@ -1,0 +1,11 @@
+    <script type="text/javascript">
+   function printDiv()
+{
+ var divToPrint=document.getElementById('DivIdToPrint');
+ var newWin=window.open('','Print-Window');
+ newWin.document.open();
+ newWin.document.write('<style>td{ border: 1px solid #ccc; padding-left: 1%; padding-right: 1%; }</style><html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+ newWin.document.close();
+ setTimeout(function(){newWin.close();},10);
+}
+           </script>

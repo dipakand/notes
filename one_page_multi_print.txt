@@ -1,0 +1,108 @@
+<?php
+        $nub_page=ceil($count/3);
+        $num_page=1;
+        $limit_inf = 1;
+        $limit_sup = 3; 
+        While ($num_page <= $nub_page)
+        {  
+            $j=$limit_inf; 
+        ?>
+        <page size="A4">
+            <form method="post" enctype="multipart/form-data" >
+                <?php
+            $com = "select * from company_master";
+            $comsel = mysqli_query($conn,$com);
+            $fetchcom = mysqli_fetch_assoc($comsel);
+                ?>
+                <div style="" width="100%" >
+                    <table cellpadding="0" cellspacing="0" width="100%">
+                        <tr style="border-bottom:1px solid;" >
+                            <td style="font-size:35px; text-align:center;" width="25%">
+                                <img src="../company_master/<?php echo $fetchcom['logo_image']; ?>" class=" img-rounded" width="180px" height="50px" />
+                            </td>
+                            <td style="padding-left:1%; ">
+                                <table cellspacing="5">
+                                    <tr ><td style="font-size:25px; text-transform:capitalize;"><b><?php echo $fetchcom['company_name'];?></b></td></tr>
+                                    <tr style="text-transform:capitalize; font-size:14px;"><td>Address : <?php echo  $fetchcom['company_address'];?></td></tr>
+                                    <tr style="font-size:14px;"><td>Post : <?php echo  $fetchcom['postal_code'];?></td> <td>Phone No : <?php echo  $fetchcom['company_phone'];?></td></tr>
+                                    <tr style="font-size:14px;"><td>Website : <?php echo  $fetchcom['website'];?></td> <td>Date : <?php echo date("d-m-Y") ?></td></tr>
+                                </table> 
+                            </td>
+                            <td width="25%" style="padding:10px;">
+                                <?php 
+                    $select1="select * from members where member_id='".$memrow['member_id']."'";
+            $query1=mysqli_query($conn, $select1);
+            $rows2=mysqli_fetch_assoc($query1);                        
+                                ?>
+                                <div><b style="font-size:14px; text-transform:capitalize;">Name :&nbsp;<?php echo $rows2['f_name'].' '. $rows2['l_name'];?></b></div>
+                                <div style="margin-top:5px;">Contact No :&nbsp;<?php echo $rows2['contact_no_1']; ?></div>
+                                <div style="margin-top:5px;">Email Id :&nbsp;<?php echo $rows2['email']; ?></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="padding-left:50px; padding-top:-10px;">
+                                <?php     
+            $noresult;
+            $wid_1=round(11);
+            $wid_2=17*$wid_1;
+            for($j; $j<=$limit_sup; $j++)
+            {
+                $para="para".$j;
+                $i='0';
+                $tot='100';
+                $per='100';
+                if($count >= $j)
+                {
+                                ?>
+                                <div id="bar-chart">
+                                    <div class="graph">
+                                        <ul class="x-axis" style="width:100%; height:90px;">
+                                            <?php
+                    $b=0;
+                    $slt = "select  date from growths where member_id='".$memrow['member_id']."'and date BETWEEN '$selectfrom' and '$selectto' order by date desc" ;
+                    $sele = mysqli_query($conn,$slt);
+                    while($rows = mysqli_fetch_assoc($sele))
+                    {   ?>
+                                            <li style="margin-right:30px;"><span class="text-center" ><b>
+                                                <?php $ste= strtotime($rows["date"]);
+                     echo date('y-m-d',$ste);
+                                                ?>  </b></span></li>
+                                            <?php  } ?> 
+                                        </ul>
+                                        <div ><h5> <?php echo $para1[$j];?></h5></div> 
+                                        <ul class="y-axis">
+                                            <li><span>100%</span></li>
+                                            <li><span>75%</span></li>
+                                            <li><span>50%</span></li>
+                                            <li><span>25%</span></li>
+                                            <li><span>0</span></li>
+                                        </ul>
+                                        <div class="bars">
+                                            <div class="bar-group" style="width:<?php echo $wid_1;?>%">
+                                                <?php
+                    $slt = "select $para, date from growths where member_id='".$memrow['member_id']."'and date BETWEEN '$selectfrom' and '$selectto' order by date desc" ;
+                    $sele = mysqli_query($conn,$slt);
+                    while($rows = mysqli_fetch_assoc($sele))
+                    { $i++; 
+                                                ?>
+                                                <div s class="bar bar-<?php echo $j;  ?> stat-<?php echo $j; ?>" style="height: <?php                                      echo($rows[$para]/$per)*$tot;?>%;"><label class="badge"><?php echo $rows[$para];?></label> </div>
+                                                <?php   } ?> 
+                                            </div>             
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php }
+            }
+                                ?> 
+                            </td>
+                        </tr> 
+                    </table>
+                </div>
+            </form>  
+        </page> <br/>          
+        <?php
+            $num_page++;
+            $limit_inf +=3;
+            $limit_sup +=3;
+        }
+        ?>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <div>Batch Time <span style="font-size:20px;" id="clock">00:00</span> minutes!</div>
+        <hr>
+        <div>Batch Time closes in <span style="font-size:20px;" id="clock1213">00:00</span> minutes!</div>
+    </body>
+    <script>
+        var xmlHttp;
+        function srvTime(){
+            try {
+                //FF, Opera, Safari, Chrome
+                xmlHttp = new XMLHttpRequest();
+            }
+            catch (err1) {
+                //IE
+                try {
+                    xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+                }
+                catch (err2) {
+                    try {
+                        xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+                    }
+                    catch (eerr3) {
+                        //AJAX not supported, use CPU time.
+                        alert("AJAX not supported");
+                    }
+                }
+            }
+            xmlHttp.open('HEAD',window.location.href.toString(),false);
+            xmlHttp.setRequestHeader("Content-Type", "text/html");
+            xmlHttp.send('');
+            return xmlHttp.getResponseHeader("Date");
+        }
+        function returnDoubleDigits(str) {
+            return str.length === 1 ? '0' + str : str;
+        }
+        function getDateTime() {
+            var fixminte = 5;
+            var st = srvTime();
+//            var date = new Date(st);
+            var date = new Date();
+            var hour    = now.getHours();
+            var minute  = now.getMinutes();
+            var second  = now.getSeconds();
+
+            if(hour.toString().length == 1) {
+                hour = '0'+hour;
+            }
+            if(minute.toString().length == 1) {
+                minute = '0'+minute;
+            }
+            if(second.toString().length == 1) {
+                second = '0'+second;
+            }
+
+            var calmin=returnDoubleDigits((Math.floor(minute/fixminte))*fixminte);
+
+            var dateTime =  hour+':'+returnDoubleDigits((minute).toString());
+
+            var dateTime1 =  hour+':'+returnDoubleDigits((calmin).toString());
+
+            var dateTimedianamic1 =  hour+':'+returnDoubleDigits((calmin).toString())+':'+second;
+
+            var currrenttime =  hour+':'+returnDoubleDigits((minute).toString())+':'+second;
+
+            var plusmin=calmin+fixminte;
+
+            var dateTimedianamic =  hour+':'+plusmin+':00';
+
+            var value_start = returnDoubleDigits(((plusmin-minute)-1).toString()); 
+
+            var value_end = returnDoubleDigits((60-second).toString());
+
+            document.getElementById("clock1213").innerHTML = value_start+':'+value_end ;
+
+            if(minute % 5 == 0){
+                document.getElementById("clock").innerHTML = dateTime;
+                console.log(dateTime);
+            } 
+            else{
+
+                document.getElementById("clock").innerHTML = dateTime1;
+            }
+
+        }
+        setInterval(function(){
+            currentTime = getDateTime();
+        }, 1000); 
+
+
+//        function AddMinutesToDate(date, minutes) {
+//            return new Date(date.getTime() + minutes*60000);
+//        }
+//
+//        function DateFormat(date){
+//            var minutes = date.getMinutes();
+//            var second  = date.getSeconds();
+//            minutes = minutes < 10 ? '0' + minutes : minutes;
+//            var strTime =  minutes+ ':' + second;
+//            return strTime;
+//        }
+        var now = new Date();
+//        var next = AddMinutesToDate(now,5);
+//        for(i=1; i<10; i++)
+//        {
+//            console.log(DateFormat(now));
+//            var next = AddMinutesToDate(now,5);
+//            console.log(i);
+//        }
+    </script>
+    </body>
+</html>

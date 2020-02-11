@@ -1,0 +1,72 @@
+$('#yourfieldID').blur(function() {
+       var val = $(this).val();
+       $.ajax({
+                type: 'POST',
+                url: 'your url',
+                data: {email: val},
+                success: function (data) {
+                    // check for response
+                    });
+                }
+            });
+    });
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("Shareitem").click(function(e){
+      e.preventDefault();
+    $.ajax({type: "POST",
+            url: "/imball-reagens/public/shareitem",
+            data: { id: $("Shareitem").val(), access_token: $("access_token").val() },
+            success:function(result){
+      $("sharelink").html(result);
+    }});
+  });
+});
+</script>
+
+
+$(function(){
+$('#artist').change(function(){
+    $.ajax({
+        url: "artist_field.php",
+        dataType:"html",
+        type: "post",
+        success: function(data){
+           $('#artist').append(data);
+        }
+    });
+});
+});
+
+
+var searchRequest = null;
+
+$(function () {
+    var minlength = 3;
+
+    $("#sample_search").keyup(function () {
+        var that = this,
+        value = $(this).val();
+
+        if (value.length >= minlength ) {
+            if (searchRequest != null) 
+                searchRequest.abort();
+            searchRequest = $.ajax({
+                type: "GET",
+                url: "sample.php",
+                data: {
+                    'search_keyword' : value
+                },
+                dataType: "text",
+                success: function(msg){
+                    //we need to check if the value is the same
+                    if (value==$(that).val()) {
+                    //Receiving the result of search here
+                    }
+                }
+            });
+        }
+    });
+});

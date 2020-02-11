@@ -1,0 +1,80 @@
+<?php
+error_reporting(0);
+session_start();
+ 
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Print</title>
+     
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+    <style>
+        .size{
+            font-size: 25px;
+            margin-top: 0px;
+        }
+
+        body {
+        background: rgb(204,204,204); 
+        }
+        
+        page {
+		  background: white;
+		  display: block;
+		  margin: 0 auto;
+		  margin-bottom: 0.5cm;
+		  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+		}
+		page[size="A4"] {  
+		  width: 21cm;
+		  min-height: 29.7cm; 
+		}
+		page[size="A4"][layout="Landscape"] {
+		  width: 29.7cm;
+		  min-height: 21cm;  
+		}
+
+		@media print {
+		  body, page {
+			margin: 0;
+			box-shadow: 0;
+		  }
+		}
+        td{
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            font-size: 10px;
+            padding-left: .5%;
+            padding-right: .5%;
+        }
+        th{
+             border: 1px solid #000;
+            font-size: 12px;
+            padding-left: .2%;
+            padding-right: .2%;
+			text-align: center;
+        }
+    </style>
+     
+    <link rel="stylesheet" href="../estimate/css/estimate.css"> 
+     
+    </head>
+    <body>
+
+    <page size="A4">
+				
+    </page>
+      
+    <script>
+    function doPrint() {
+        window.print();
+        window.close();
+        }
+    window.onload = doPrint;
+    </script>
+</body>
+</html>

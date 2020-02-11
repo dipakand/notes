@@ -1,0 +1,70 @@
+$select111="select * from sales where party_id='".$fetch1['id']."'and date between '".$_SESSION['frm_dt']."' and '".$_SESSION['to_dt']."' ";
+$query111=mysqli_query($conn, $select111);
+$num=mysqli_num_rows($query111);
+
+$per_page= 25;
+$offset=0;
+$no_of_page=ceil($num / $per_page);
+$current_page= '';
+if(isset($_GET['page']))
+{
+    $current_page=$_GET['page'];
+    $offset=($per_page * $current_page) - $per_page;
+}
+ 
+ 
+$select="select * from sales where party_id='".$fetch1['id']."' and date between '".$_SESSION['frm_dt']."' and '".$_SESSION['to_dt']."' LIMIT ".$per_page." OFFSET ".$offset;
+$query=mysqli_query($conn,$select);
+
+<nav aria-label="Page navigation" class="text-center">
+<ul class="pagination">
+<li class="<?php if($current_page == 1 || $current_page == '') { echo "disabled" ;}?>">
+<a href="<?php 
+if($current_page == 1 || $current_page == '')
+{
+    echo "";
+}
+else
+{
+    echo "?page=".($current_page - 1);
+}
+?>" aria-label="Previous">
+<span aria-hidden="true">&laquo; Previous</span>
+</a>
+</li>
+<?php for($i=1; $i <= $no_of_page; $i++)
+{ ?>
+<li class="
+<?php 
+    if($current_page == $i)
+    {
+        echo "active";
+    }
+    elseif($current_page == '' && $i == 1)
+    {
+        echo "active";  
+    }
+?>
+"><a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+<?php } ?>
+<li class="<?php if($current_page == $no_of_page) { echo "disabled" ;}?>">
+<a href="<?php 
+if($current_page == $no_of_page)
+{
+    echo "#";
+}
+elseif($current_page == '')
+{
+    echo "?page=2";
+}
+else
+{
+    echo "?page=".($current_page + 1);
+}
+?>
+" aria-label="Next">
+<span aria-hidden="true">Next &raquo;</span>
+</a>
+</li>
+</ul>
+</nav>

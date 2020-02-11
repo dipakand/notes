@@ -1,0 +1,23 @@
+This query for select db name of current project
+$cur_db=mysqli_fetch_assoc(mysqli_query($conn,"SELECT DATABASE()")); 
+echo $cur_db['DATABASE()'];
+
+
+This query for select table name of db
+$sql = "SHOW TABLES FROM ".$_SESSION['db_name'];
+$result = mysqli_query($conn,$sql);
+while ($row = mysqli_fetch_array($result)) {
+	echo $row[0];
+}
+
+This query for select columns of table 
+$sql = "SHOW COLUMNS FROM '".$table_name."'";
+$result = mysqli_query($conn,$sql);
+$ro=0;
+while($row = mysqli_fetch_array($result)){
+    if($ro != 0)
+    {
+        $table_fields[]=$row['Field']."<br>";
+    }
+    $ro++;
+}

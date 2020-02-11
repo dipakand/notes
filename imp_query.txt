@@ -1,0 +1,5 @@
+SELECT MAX(amount) FROM `transactions` WHERE amount < (select MAX(amount) FROM transactions )
+
+SELECT * FROM `transactions` WHERE amount not in (SELECT amount FROM transactions_1 WHERE amount =20000)
+
+SELECT department.name, department_charges.* FROM department INNER JOIN department_charges ON department_charges.deprt_id = department.id WHERE department.relation = (SELECT department.relation from department WHERE department.id = 22)

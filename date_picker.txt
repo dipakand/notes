@@ -1,0 +1,24 @@
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+<input type="text" name="date_frm" id="txtstartdate" class="form-control" placeholder="Enter From" required>
+<input type="text" name="date_to" id="txtenddate" class="form-control" max="date_frm" placeholder="Enter To" required>
+<script>
+        $(function() {
+          $( ".datepicker" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-50:+10",
+               
+          });
+      });
+    </script>
+<script>
+    $("#txtstartdate").datepicker({
+  dateFormat: 'yy-mm-dd',
+  onSelect: function(date) {
+    $("#txtenddate").datepicker('option', 'minDate', date);
+  }
+});
+
+$("#txtenddate").datepicker({dateFormat: 'yy-mm-dd' });
+    </script>

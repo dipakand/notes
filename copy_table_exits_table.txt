@@ -1,0 +1,10 @@
+CREATE TABLE table2 SELECT * FROM table1
+
+ALTER TABLE tableName ADD PRIMARY KEY (id) 
+
+
+SELECT table_name FROM information_schema.tables WHERE table_schema = 'database_name'; //view all tables in current database
+
+(select database()); //current database name
+
+CREATE TABLE new_table_name LIKE copy_table_name

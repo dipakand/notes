@@ -1,0 +1,4 @@
+$dStart = new DateTime($fetchLast['date']);
+$dEnd  = new DateTime(date('Y-m-d'));
+$dDiff = $dStart->diff($dEnd);
+echo $dDiff->format('%r%a');
