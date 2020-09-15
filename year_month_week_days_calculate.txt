@@ -1,0 +1,20 @@
+$start  = date_create('2020-06-20');
+$end    = date_create(date("Y-m-d")); // Current time and date
+$diff   = date_diff( $start, $end );
+echo  $diff->y . ' years, ';
+echo  $diff->m . ' months, ';
+$days = $diff->d;
+$weeks = intval($days / 7);
+$days = $days % 7;
+if($weeks)
+{
+    printf("%d weeks", $weeks);
+}
+if($days)
+{
+    if($weeks)
+    {
+        printf(" and ");
+    }
+    printf("%d days", $days);
+}

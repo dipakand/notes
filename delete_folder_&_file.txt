@@ -1,0 +1,98 @@
+
+// delete all files and sub-folders from a folder
+function Delete($path)
+    {
+        if (is_dir($path) === true)
+        {
+            $files = array_diff(scandir($path), array('.', '..'));
+            foreach ($files as $file)
+            {
+                Delete(realpath($path) . '/' . $file);
+            }
+            return rmdir($path);
+        }
+        else if (is_file($path) === true)
+        {
+            return unlink($path);
+        }
+        return false;
+    }
+-------------------------------------------------------------------------------------------------------
+
+PHP Function to Delete All Files from Folder:
+<?php
+// delete all files from folder
+function deleteFiles($dir)
+{
+    // loop through the files one by one
+    foreach(glob($dir . '/*') as $file){
+        // check if is a file and not sub-directory
+        if(is_file($file)){
+            // delete file
+            unlink($file);
+        }
+    }
+}
+?>
+
+Usage:
+<?php deleteFiles("test"); ?>
+
+-------------------------------------------------------------------------------------------------------
+
+Delete Only Particular File Type from Folder:
+Say you don't want to remove all files, just the pdf files alone from a folder. Then here's the script for the task.
+
+<?php
+// delete all pdf files from folder
+function deleteFiles($dir)
+{
+    // loop through the files one by one
+    foreach(glob($dir . '/*.pdf') as $file){
+        // check if is a file and not sub-directory
+        if(is_file($file)){
+            // delete file
+            unlink($file);
+        }
+    }
+}
+?>
+
+---------------------------------------------------------------------------------------------
+
+Delete Files Older than X Days from Folder:
+This is another useful variation of the script. Suppose you want to delete older files say of at least 90 days old. You have to simply check if the last modified date and time of the file is greater than 90 days and delete if it is.
+
+<?php
+// delete all files older than 90 days
+function deleteFiles($dir)
+{
+    // loop through the files one by one
+    foreach(glob($dir . '/*') as $file){
+        if(is_file($file)){
+            // check if file older than 90 days
+            if((time() - filemtime($file)) > (60 * 60 * 24 * 90))
+                unlink($file);
+        }
+    }
+}
+?>
+
+----------------------------------------------------------------------------------------
+
+Delete All Files and Sub Folders from a Folder in PHP:
+
+<?php
+// delete all files and sub-folders from a folder
+function deleteAll($dir) {
+    foreach(glob($dir . '/*') as $file) {
+        if(is_dir($file))
+            deleteAll($file);
+        else
+            unlink($file);
+    }
+    rmdir($dir);
+}
+?>
+Function Usage:
+<?php deleteAll("test"); ?>

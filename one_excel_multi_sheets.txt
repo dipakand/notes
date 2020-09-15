@@ -1,0 +1,66 @@
+<?php
+require_once("../include/config.php");
+
+require_once 'PHPExcel-1.8/Classes/PHPExcel.php';
+require_once 'PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
+
+// Create new PHPExcel object
+$objPHPExcel = new PHPExcel();
+$objPHPExcel->getProperties()->setCreator("RN Kushwaha")
+            ->setLastModifiedBy("Aryan")
+            ->setTitle("Reports")
+            ->setSubject("Excel Turorials")
+            ->setDescription("Test document ")
+            ->setKeywords("phpExcel")
+            ->setCategory("Test file");
+
+// Create a first sheet, representing sales data
+$objPHPExcel->setActiveSheetIndex(0);
+$objPHPExcel->getActiveSheet()->setCellValue('A1', 'ID');
+$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Name');
+$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Email');
+$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Phone');
+
+$n=2;
+$qry= $conn->query("select * from vendor_details ");
+while($d= mysqli_fetch_assoc($qry)){
+    $objPHPExcel->getActiveSheet()->setCellValue('A'.$n, $d['id']);
+    $objPHPExcel->getActiveSheet()->setCellValue('B'.$n, $d['name']);
+    $objPHPExcel->getActiveSheet()->setCellValue('C'.$n, $d['email']);
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$n, $d['contact']);
+    $n++;
+}                
+
+// Rename sheet
+$objPHPExcel->getActiveSheet()->setTitle('Vendor Details');
+
+// Create a new worksheet, after the default sheet
+$objPHPExcel->createSheet();
+
+// Add some data to the second sheet, resembling some different data types
+$objPHPExcel->setActiveSheetIndex(1);
+$objPHPExcel->getActiveSheet()->setCellValue('A1', 'ID');
+$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Title');
+$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Email');
+$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Phone No');
+
+$n=2;
+$qry=$conn->query("select * from vendor_party ");
+while($d= mysqli_fetch_array($qry)){
+    $objPHPExcel->getActiveSheet()->setCellValue('A'.$n, $d['id']);
+    $objPHPExcel->getActiveSheet()->setCellValue('B'.$n, $d['name']);
+    $objPHPExcel->getActiveSheet()->setCellValue('C'.$n, $d['contact_no']);
+    $objPHPExcel->getActiveSheet()->setCellValue('D'.$n, $d['gst_in']);
+    $n++;
+}       
+
+// Rename 2nd sheet
+$objPHPExcel->getActiveSheet()->setTitle('Party Details');
+
+// Redirect output to a client’s web browser (Excel5)
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment;filename="Project Name.xls"');
+header('Cache-Control: max-age=0');
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+$objWriter->save('php://output');
+?>

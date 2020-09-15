@@ -1,12 +1,14 @@
 <?php
 error_reporting(0);
 session_start();
-include("include/config.php");
+include("config.php");
+
+$conn = mysqli_connect('localhost', 'root', 'root','xlit2');
+
 if(isset($_POST['update']) && $_POST['show'] == 1)
 {   
     $table_name=$_POST['table_name'];
     $field=$_POST['field'];
-    //    echo "update `$table_name` set `".$_POST["column"]."`='".$_POST["editval"]."' WHERE  `$field`='".$_POST["id"]."'";
     mysqli_query($conn,"update `$table_name` set `".$_POST["column"]."`='".$_POST["editval"]."' WHERE  `$field`='".$_POST["id"]."'");
 }
 
@@ -14,7 +16,7 @@ if((isset($_POST['table_name']) && $_POST['show'] == 1))
 {
     $table_name=$_POST['table_name'];
     $db_name=$_POST['db_name'];
-     
+
     $show=$_POST['show'];
     $sql = "SHOW COLUMNS FROM ".$db_name.".`$table_name`";
     $result = mysqli_query($conn,$sql);
@@ -405,5 +407,20 @@ if(isset($_POST['DirectName']) && $_POST['show'] == 12)
     //    $folder='../test';
     $xyz=$with_file;
     listFolderFiles($folder,$xyz); 
+}
+
+if(isset($_POST['folder_name1']) && isset($_POST['file_name1']) && $_POST['show'] == 14)
+{
+    $folder_name=$_POST['folder_name1'];
+    $file_name=$_POST['file_name1'];
+    $variabl=$folder_name.$file_name;
+    echo "<br><p>";
+    $myfile = fopen($variabl, "r") or die("Unable to open file!");
+    // Output one line until end-of-file
+    while(!feof($myfile)) {
+        echo fgets($myfile) . "<br>";
+    }
+    fclose($myfile);
+    echo "</p>";
 }
 ?>

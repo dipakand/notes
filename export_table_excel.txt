@@ -41,3 +41,147 @@ while($row = mysqli_fetch_row($resultt))  //fetch_table_data
 }
 
 ?>
+
+
+----------------------------------------------------------------or------------------------------------------------------------
+<?php
+error_reporting(0);
+session_start();
+ob_start();
+include("../include/config.php");
+$role = $_SESSION['sess_userrole'];
+if(!isset($_SESSION['sess_username'])){
+    header('Location:../login/login.php?err=2');
+}
+$date = date_default_timezone_set('Asia/Kolkata');
+$today = date("F j, Y, g:i a T");
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>excel</title>
+        <style type="text/css">
+            body {
+                font-family:Verdana, Arial, Helvetica, sans-serif;
+                font-size:15px;
+                margin:0px;
+                padding:0px;
+            }
+            table,td,tr{
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='table-responsive'>     
+            <?php
+            $db = $_REQUEST['db'];
+            $location=mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM location WHERE loc_db='".$db."'"));
+            $table='<table class="">'; 
+            $table.='<tr><td  colspan="9"  style="text-align:center;"><b>Stock All Model ("'.$location['loc_name'].'")</b></td></tr>';
+            $table.='<tr style="background-color:#F5F8A5;">
+                        <td  style="border:1px solid;text-align:center">Varient</b></td>
+                        <td  style="border:1px solid;text-align:center">Color</b></td>
+                        <td  style="border:1px solid;text-align:center">Chassis</b></td>
+                        <td  style="border:1px solid;text-align:center">Engine No</b></td>
+                        <td  style="border:1px solid;text-align:center">Qty</b></td>
+                        <td  style="border:1px solid;text-align:center">Suplier Inv No./Date</b></td>
+                        <td  style="border:1px solid;text-align:center">Purchase Inv No./Date</b></td>
+                        <td  style="border:1px solid;text-align:center">Purchase Price</b></td> 
+                        <td  style="border:1px solid;text-align:center">Overall Age</b></td>';
+            $table.='</tr>';
+
+            $chassis = mysqli_query($conn,"SELECT * FROM ".$db.".load_receive WHERE (avl_alloted='0' OR avl_alloted='') AND pdi_date!='0000-00-00' AND pdi_status='1'");
+            while($row_chassis = mysqli_fetch_assoc($chassis)){
+                $table.='<tr>';
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['model_variant'];
+                $table.='</td>';
+
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['color'];
+                $table.='</td>';
+
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['frame_no'];
+                $table.='</td>';
+
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['engine_No'];
+                $table.='</td>';
+
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= '1';
+                $table.='</td>';
+
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['sap_invoice_number']." / ".date('d-M-Y',strtotime($row_chassis['dispatch_date']));
+                $table.='</td>';
+
+                $table.='<td  style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['purchase_order_no']." / ".date('d-M-Y',strtotime($row_chassis['purchase_date']));
+                $table.='</td>';
+
+                $table.='<td style="border:1px solid;background-color:'.$bg_color.'">';
+                $table.= $row_chassis['hmsi_Invoice_Amount'];
+                $table.='</td>';
+
+                $table.='<td style="border:1px solid;background-color:'.$bg_color.'">';
+                $start_date = strtotime($row_chassis['manufacturing_date']); 
+                $end_date = strtotime(date('Y-m-d'));
+                $table.= $diff=($end_date - $start_date)/60/60/24;;
+                $table.='</td>';
+
+                $table.='</tr>';
+
+            }
+            $table.='</table>';
+
+            echo $table;
+            $filename="All Model Varient list ".date('d-m-Y');
+            header("Content-type: application/x-msdownload"); 
+            header('Content-Disposition: attachment; filename="'.$filename.'.xls"');
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            echo "<meta http-equiv='refresh' content='0;URL=ageing_stock_report.php'>";
+            ?>
+        </div>
+    </body>
+</html>
+
+
+------------------------------------------------------------or----------------------------------------------------------------------
+
+<button onclick='fnExcelReport();' class='btn btn-primary'> Excel </button>
+<script>
+            function fnExcelReport()
+            {
+                var tab_text="<table border='2px'><tr bgcolor='#f1e995'>";
+                var textRange; var j=0;
+                tab = document.getElementById('example_exp'); // id of table
+                for(j = 0 ; j < tab.rows.length ; j++)
+                {
+                    tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+                    //tab_text=tab_text+"</tr>";
+                }
+                tab_text=tab_text+"</table>";
+                tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+                tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+                tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+                var ua = window.navigator.userAgent;
+                var msie = ua.indexOf("MSIE ");
+                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                {
+                    txtArea1.document.open("txt/html","replace");
+                    txtArea1.document.write(tab_text);
+                    txtArea1.document.close();
+                    txtArea1.focus();
+                    //					sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+                }
+                else                 //other browser not tested on IE 11
+                    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+                return (sa);
+            }
+        </script>
