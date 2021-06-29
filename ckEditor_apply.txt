@@ -1,0 +1,7 @@
+<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+<textarea name="bodyText" id="bodyText" rows="5" ></textarea>
+<script>
+            CKEDITOR.replace( 'bodyText' );
+ var txtBody = CKEDITOR.instances.bodyText.getData();
+//on click to button check val //alert(txtBody);
+ </script>

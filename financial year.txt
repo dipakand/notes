@@ -1,0 +1,16 @@
+$curdate = strtotime(date("d-m-Y")) ;
+$cald = date('Y');
+$date2 = strtotime("31-03-".$cald) ;
+if($curdate > $date2 )
+{
+    $curdate;
+    $financial_year1 = date("y", $curdate);
+    $financial_year2 =  date("y", strtotime("+1 year"));
+    $current_year1 =  $financial_year1 . $financial_year2 ;
+}
+elseif($curdate <= $date2)
+{
+    $financial_year1= date('y',strtotime("-1 year"));
+    $financial_year2 = date('y');
+    $current_year1 =  $financial_year1 . $financial_year2;
+}

@@ -1,0 +1,15 @@
+<script type="text/javascript">
+$(function(){
+        var options = {
+            source: '../include_job_card/search_view_veh_no.php?CommandType=HSN',
+            minLength: 0,
+            scroll : 'true'
+        };
+
+        var selector = 'input.searchInput';
+        $(document).on('keydown.autocomplete', selector, function() {
+            $(this).autocomplete(options);
+        });
+    });
+</script>
+<input type="text" id="hsn_1" name="hsn[]" value="" class="form-control searchInput" placeholder="Enter HSN" required style="padding: 5px 5px;" onblur="checkhsn(this);">

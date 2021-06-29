@@ -1,0 +1,8 @@
+Get a SELECT query
+$sql = $this->db->get_compiled_select();
+Get a INSERT query
+$sql = $this->db->get_compiled_insert(); or echo $this->db->insert_string();
+Get a UPDATE query
+$sql = $this->db->get_compiled_update(); or echo $this->db->update_string();
+Get a DELETE query
+$sql = $this->db->get_compiled_delete();

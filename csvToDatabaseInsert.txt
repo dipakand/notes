@@ -1,0 +1,8 @@
+ if ($_FILES["file"]["size"] > 0) {
+
+        $file = fopen($fileName, "r");
+
+        while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+//            fclose($file);
+        }
+    }
