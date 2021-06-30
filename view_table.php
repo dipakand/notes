@@ -1,8 +1,7 @@
 <?php
 error_reporting(0);
 session_start();
-include("../include/config.php");
-$conn = mysqli_connect('localhost', 'root', 'root','xlit2');
+$conn = mysqli_connect('localhost', 'root', '','testing');
 if(isset($_POST["btn_refresh"])) 
 {
     echo "<meta http-equiv='refresh' content='0'>";
