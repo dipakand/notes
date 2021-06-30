@@ -1,9 +1,8 @@
 <?php
 error_reporting(0);
 session_start();
-include("config.php");
 
-$conn = mysqli_connect('localhost', 'root', 'root','xlit2');
+$conn = mysqli_connect('localhost', 'root', '','testing');
 
 if(isset($_POST['update']) && $_POST['show'] == 1)
 {   
